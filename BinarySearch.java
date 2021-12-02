@@ -1,5 +1,5 @@
 /*
-* This program generates 50 random numbers in an array
+* This program generates 30 random numbers in an array
 * and allows the user to search the array for a number.
 *
 * @author  Matthew Sanii
@@ -8,6 +8,7 @@
 */
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -27,7 +28,7 @@ final class BinarySearch {
     /**
     * The number of elements in the array.
     */
-    private static final int ARRAY_SIZE = 50;
+    private static final int ARRAY_SIZE = 30;
 
     /**
     * Prevent instantiation
@@ -54,33 +55,62 @@ final class BinarySearch {
                             final int lowIndex, final int highIndex) {
         int result = -1;
         int check = 0;
-        final int middle = lowIndex + (highIndex / 2);
+        final int max = 29;
+        final int ranges = 3;
+        int middle = lowIndex + (highIndex / 2);
+        if (middle > max) {
+            middle = max;
+        }
         final int spot = userArray[middle];
         final int mid = highIndex - lowIndex;
-        if (mid == 3) {
-            for (int i = 0; i < mid; i++) {
-                if (userArray[middle + i] == userNumber) {
-                    result = middle + i;
+        if (mid <= ranges) {
+            check = 1;
+            for (int range = 0; range <= mid; range++) {
+                if (middle + range > max || middle - range < 0) {
                     break;
                 }
-                else if (userArray[middle - i] == userNumber) {
-                    result = middle - i;
+                else if (userArray[middle + range] == userNumber) {
+                    result = middle + range;
+                    break;
+                }
+                else if (userArray[middle - range] == userNumber) {
+                    result = middle - range;
                     break;
                 }
             }
         }
         else if (check == 0) {
-            if (spot > userNumber) {
-                result = binarySearch(userArray, userNumber, lowIndex, middle);
-            }
-            else if (spot < userNumber) {
-                result = binarySearch(userArray, userNumber, middle, highIndex);
-            }
-            else if (spot == userNumber) {
-                result = middle;
-            }
+            result = checker(userArray, userNumber, lowIndex, highIndex,
+                                                        middle, spot);
         }
         return result;
+    }
+
+    /**
+    * Function finds the index of a number, using Binary Search recursively.
+    *
+    * @param userArray parameter for user array.
+    * @param userNumber parameter for user number.
+    * @param lowIndex parameter for low end of index.
+    * @param highIndex parameter for high end of index.
+    * @param middle parameter for the middle value.
+    * @param spot parameter for value at middle spot in array.
+    * @return binarySearch
+    */
+    static int checker(final int[] userArray, final int userNumber,
+                            final int lowIndex, final int highIndex,
+                            final int middle, final int spot) {
+        int results = -1;
+        if (spot > userNumber) {
+            results = binarySearch(userArray, userNumber, lowIndex, highIndex / 2);
+        }
+        else if (spot < userNumber) {
+            results = binarySearch(userArray, userNumber, middle, highIndex);
+        }
+        else if (spot == userNumber) {
+            results = middle;
+        }
+        return results;
     }
 
     /**
@@ -92,6 +122,7 @@ final class BinarySearch {
     public static void main(final String[] args) {
         System.out.println("Binary Search Program");
         try {
+            int searchNumber = 0;
             final Random randNumber = new Random();
             final int[] randomNumberArray = new int[ARRAY_SIZE];
             for (int counter = 0; counter < randomNumberArray.length; counter++) {
@@ -108,7 +139,13 @@ final class BinarySearch {
             final Scanner userInput = new Scanner(System.in);
             System.out.print("What number are you searching for in the array");
             System.out.print(" (integer between 0 and 999): ");
-            final int searchNumber = userInput.nextInt();
+            try {
+                searchNumber = userInput.nextInt();
+            }
+            catch (InputMismatchException errorCode) {
+                System.out.println("Error, invalid input (must be an integer)");
+                System.exit(0);
+            }
             userInput.close();
             System.out.println();
             if (searchNumber > MAX || searchNumber < MIN) {
