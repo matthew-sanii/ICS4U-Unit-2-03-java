@@ -1,5 +1,5 @@
 /*
-* This program generates 30 random numbers in an array
+* This program generates 50 random numbers in an array
 * and allows the user to search the array for a number.
 *
 * @author  Matthew Sanii
@@ -27,7 +27,7 @@ final class BinarySearch {
     /**
     * The number of elements in the array.
     */
-    private static final int ARRAY_SIZE = 30;
+    private static final int ARRAY_SIZE = 50;
 
     /**
     * Prevent instantiation
@@ -53,20 +53,32 @@ final class BinarySearch {
     static int binarySearch(final int[] userArray, final int userNumber,
                             final int lowIndex, final int highIndex) {
         int result = -1;
+        int check = 0;
         final int middle = lowIndex + (highIndex / 2);
         final int spot = userArray[middle];
         final int mid = highIndex - lowIndex;
-        if (mid == 1 && spot != userNumber) {
-            result = -1;
+        if (mid == 3) {
+            for (int i = 0; i < mid; i++) {
+                if (userArray[middle + i] == userNumber) {
+                    result = middle + i;
+                    break;
+                }
+                else if (userArray[middle - i] == userNumber) {
+                    result = middle - i;
+                    break;
+                }
+            }
         }
-        else if (spot > userNumber) {
-            result = binarySearch(userArray, userNumber, lowIndex, middle);
-        }
-        else if (spot < userNumber) {
-            result = binarySearch(userArray, userNumber, middle, highIndex);
-        }
-        else if (spot == userNumber) {
-            result = middle;
+        else if (check == 0) {
+            if (spot > userNumber) {
+                result = binarySearch(userArray, userNumber, lowIndex, middle);
+            }
+            else if (spot < userNumber) {
+                result = binarySearch(userArray, userNumber, middle, highIndex);
+            }
+            else if (spot == userNumber) {
+                result = middle;
+            }
         }
         return result;
     }
