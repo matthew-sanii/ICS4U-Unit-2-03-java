@@ -27,7 +27,7 @@ final class BinarySearch {
     /**
     * The number of elements in the array.
     */
-    private static final int ARRAY_SIZE = 100;
+    private static final int ARRAY_SIZE = 50;
 
     /**
     * Prevent instantiation
@@ -55,17 +55,18 @@ final class BinarySearch {
         int result = -1;
         final int middle = lowIndex + (highIndex / 2);
         final int spot = userArray[middle];
-        if (spot > userNumber) {
-            result = binarySearch(userArray, userNumber, lowIndex, highIndex / 2);
+        final int mid = highIndex - lowIndex;
+        if (mid == 1 && spot != userNumber) {
+            result = -1;
+        }
+        else if (spot > userNumber) {
+            result = binarySearch(userArray, userNumber, lowIndex, middle);
         }
         else if (spot < userNumber) {
             result = binarySearch(userArray, userNumber, middle, highIndex);
         }
         else if (spot == userNumber) {
             result = middle;
-        }
-        else {
-            result = -1;
         }
         return result;
     }
