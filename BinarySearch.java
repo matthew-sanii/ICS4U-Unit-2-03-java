@@ -1,5 +1,5 @@
 /*
-* This program generates 100 random numbers in an array
+* This program generates 30 random numbers in an array
 * and allows the user to search the array for a number.
 *
 * @author  Matthew Sanii
@@ -27,7 +27,7 @@ final class BinarySearch {
     /**
     * The number of elements in the array.
     */
-    private static final int ARRAY_SIZE = 50;
+    private static final int ARRAY_SIZE = 30;
 
     /**
     * Prevent instantiation
